@@ -23,7 +23,7 @@ export default {
   props: {
     name: {
       type: String,
-      default: ''
+      default: 'one'
     }
   },
   computed: {
