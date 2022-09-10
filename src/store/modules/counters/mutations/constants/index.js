@@ -1,0 +1,1 @@
+export const MUTATION_INCREASE_COUNTER = 'increaseCounter'

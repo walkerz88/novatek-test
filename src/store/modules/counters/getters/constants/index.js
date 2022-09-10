@@ -1,0 +1,1 @@
+export const GETTERS_COUNTER = 'getCounter'
