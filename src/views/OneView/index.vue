@@ -1,5 +1,5 @@
 <template>
-  <UiStoreCounter :name="name" />
+  <UiStoreCounter name="one" />
 </template>
 
 <script>
@@ -9,11 +9,6 @@ export default {
   name: 'OneView',
   components: {
     UiStoreCounter
-  },
-  created() {
-    const { name } = this.$route
-
-    this.name = name
   }
 }
 </script>
