@@ -3,7 +3,6 @@
     <v-main class="main">
       <div class="wrapper">
         <v-card>
-          {{ activeTab }}
           <v-tabs v-model="activeTab" v-show="tabs.length > 0">
             <div class="tab" v-for="tab in tabs" :key="tab.name">
               <v-tab :to="tab.path" class="tab__link">
