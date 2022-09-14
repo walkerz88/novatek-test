@@ -40,85 +40,85 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
-import { mapActions } from 'vuex'
+import { ref, computed } from "vue";
+import { mapActions } from "vuex";
 
-import { STORE_MODULE_COUNTERS } from '@/store/constants/index'
-import { ACTION_DROP_COUNTER } from '@/store/modules/counters/actions/constants'
+import { STORE_MODULE_COUNTERS } from "@/store/constants/index";
+import { ACTION_DROP_COUNTER } from "@/store/modules/counters/actions/constants";
 
-import { PATH_HOME } from '@/router/routes/constants'
+import { PATH_HOME } from "@/router/routes/constants";
 
-import { APP_TABS } from './constants'
+import { APP_TABS } from "./constants";
 
 export default {
-  name: 'App',
+  name: "App",
 
   created() {
-    this.APP_TABS = APP_TABS
+    this.APP_TABS = APP_TABS;
   },
 
   setup() {
-    const activeTab = ref(0)
-    const closedTabs = ref([])
+    const activeTab = ref(0);
+    const closedTabs = ref([]);
     const tabs = computed(() =>
       APP_TABS.filter((item) => closedTabs.value.includes(item.name) === false)
-    )
+    );
 
     return {
       activeTab,
       closedTabs,
-      tabs
-    }
+      tabs,
+    };
   },
 
   methods: {
     ...mapActions(STORE_MODULE_COUNTERS, {
-      dropCounter: ACTION_DROP_COUNTER
+      dropCounter: ACTION_DROP_COUNTER,
     }),
     closeTab(name) {
-      const { name: routeName } = this.$route
+      const { name: routeName } = this.$route;
 
-      if (routeName === name) {
+      if ([name, PATH_HOME.name].includes(routeName) === true) {
         const previousTabIndex =
-          this.tabs.findIndex((item) => item.name === name) - 1
+          this.tabs.findIndex((item) => item.name === name) - 1;
 
         const nextTabIndex =
-          this.tabs.findIndex((item) => item.name === name) + 1
+          this.tabs.findIndex((item) => item.name === name) + 1;
 
-        const previousTab = this.tabs[previousTabIndex]
-        const nextTab = this.tabs[nextTabIndex]
+        const previousTab = this.tabs[previousTabIndex];
+        const nextTab = this.tabs[nextTabIndex];
 
         if (nextTab !== undefined) {
-          this.$router.push({ name: nextTab.name })
+          this.$router.push({ name: nextTab.name });
         } else if (previousTab !== undefined) {
-          this.$router.push({ name: previousTab.name })
+          this.$router.push({ name: previousTab.name });
         } else {
-          this.$router.push({ name: PATH_HOME.name })
+          this.$router.push({ name: PATH_HOME.name });
         }
 
-        this.updateActiveTab()
+        this.updateActiveTab();
       }
 
-      this.closedTabs.push(name)
+      this.closedTabs.push(name);
 
-      this.dropCounter(name)
+      this.dropCounter(name);
     },
     undoCloseTab() {
-      const name = this.closedTabs[this.closedTabs.length - 1]
+      const name = this.closedTabs[this.closedTabs.length - 1];
 
-      this.closedTabs.pop()
+      this.closedTabs.pop();
 
-      this.$router.push({ name })
+      this.$router.push({ name });
 
-      this.updateActiveTab()
+      this.updateActiveTab();
     },
     updateActiveTab() {
-      const { name } = this.$route
+      const { name } = this.$route;
 
-      this.activeTab = this.tabs.indexOf((item) => item.name === name)
-    }
-  }
-}
+      this.activeTab = this.tabs.indexOf((item) => item.name === name);
+    },
+  },
+};
 </script>
 
 <style scoped>
