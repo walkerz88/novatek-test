@@ -3,6 +3,7 @@
     <v-main class="main">
       <div class="wrapper">
         <v-card>
+          {{ activeTab }}
           <v-tabs v-model="activeTab" v-show="tabs.length > 0">
             <div class="tab" v-for="tab in tabs" :key="tab.name">
               <v-tab :to="tab.path" class="tab__link">
@@ -46,7 +47,7 @@ import { mapActions } from "vuex";
 import { STORE_MODULE_COUNTERS } from "@/store/constants/index";
 import { ACTION_DROP_COUNTER } from "@/store/modules/counters/actions/constants";
 
-import { PATH_HOME } from "@/router/routes/constants";
+import { PATH_HOME, PATH_ONE } from "@/router/routes/constants";
 
 import { APP_TABS } from "./constants";
 
@@ -77,8 +78,9 @@ export default {
     }),
     closeTab(name) {
       const { name: routeName } = this.$route;
+      const tabName = routeName === PATH_HOME.name ? PATH_ONE.name : routeName
 
-      if ([name, PATH_HOME.name].includes(routeName) === true) {
+      if (name === tabName) {
         const previousTabIndex =
           this.tabs.findIndex((item) => item.name === name) - 1;
 
@@ -95,13 +97,13 @@ export default {
         } else {
           this.$router.push({ name: PATH_HOME.name });
         }
-
-        this.updateActiveTab();
       }
 
       this.closedTabs.push(name);
 
       this.dropCounter(name);
+
+      this.updateActiveTab();
     },
     undoCloseTab() {
       const name = this.closedTabs[this.closedTabs.length - 1];
@@ -114,8 +116,9 @@ export default {
     },
     updateActiveTab() {
       const { name } = this.$route;
+      const index = this.tabs.findIndex((item) => item.name === name);
 
-      this.activeTab = this.tabs.indexOf((item) => item.name === name);
+      this.activeTab = index;
     },
   },
 };
